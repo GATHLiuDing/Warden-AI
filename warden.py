@@ -4,17 +4,17 @@ import datetime
 import os
 import re
 
-# 1. Save the original Python function
+# 1. Save the original Python functions we want to secure
 _original_subprocess_run = subprocess.run
 
 class AgentHijackException(Exception):
     pass
 
-# 2. Ensure our secure audit log directory exists
+# 2. Check if our secure audit log directory exists
 if not os.path.exists("audit_logs"):
     os.makedirs("audit_logs")
 
-# 3. The Forensic Logger
+# 3. Forensic Logging Function
 def log_incident(command, reason):
     incident = {
         "timestamp": datetime.datetime.now().isoformat(),
@@ -23,11 +23,11 @@ def log_incident(command, reason):
         "severity": "CRITICAL",
         "action_taken": "BLOCKED_AND_CRASHED"
     }
-    # Append the incident to our JSON log file
+    # Append the incident to our JSON log files
     with open("audit_logs/warden_alerts.json", "a") as f:
         f.write(json.dumps(incident) + "\n")
 
-# 4. The Advanced Interceptor
+# 4. Interceptor
 def secure_subprocess_run(*args, **kwargs):
     print("\n[🛡️ WARDEN] Intercepting execution request...")
     
@@ -35,8 +35,6 @@ def secure_subprocess_run(*args, **kwargs):
     cmd_str = " ".join(command) if isinstance(command, list) else str(command)
     
     print(f"[🛡️ WARDEN] Analyzing command: {cmd_str}")
-
-    # --- ADVANCED HEURISTIC ENGINE ---
     
     # Rule A: Block dangerous binaries using regex boundaries (Catches /usr/bin/curl)
     dangerous_binaries = r'\b(curl|wget|nc|netcat|bash|sh|zsh|php|nmap)\b'
