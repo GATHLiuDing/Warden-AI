@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+
+# --- WARDEN-AI CUSTOM OPSEC ---
+# Never upload environment variables or secrets
+.env
+.env.local
+.secrets/
+
+# Never upload the virtual environment
+venv/
+env/
+
+# Never upload local test logs
+*.log
+audit_logs/
